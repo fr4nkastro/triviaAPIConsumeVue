@@ -1,53 +1,59 @@
 <template>
 <div class="padre">
- <div class="tarjeta"> 
-  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/International_Pok%C3%A9mon_logo.svg/1200px-International_Pok%C3%A9mon_logo.svg.png" width="200">  
-<h1>Adivina quién es este pokémon?</h1>
- <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Pokebola-pokeball-png-0.png/769px-Pokebola-pokeball-png-0.png" width="100"><br>
- <!--<img src="https://assets.pokemon.com/assets/cms2/img/pokedex/full/008.png" width="200">-->
- <img v-if="pokemon!=null" :src="this.img" alt="" width="300">
- <h3>Seleccione su respuesta</h3>
- <select v-if="this.listPokemon.length > 4" name="" id="" v-model="selectedOption" >
-    <option value="0" selected>Selecciona tu respuesta</option>
-    <option value="1">{{this.listPokemon[0].name}}</option>
-    <option value="2">{{this.listPokemon[1].name}}</option>
-    <option value="3">{{this.listPokemon[2].name}}</option>
-    <option value="4">{{this.listPokemon[3].name}}</option>
-    <option value="5">{{this.listPokemon[4].name}}</option></select>
- <div class="padre">
+    <div class="tarjeta"> 
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/International_Pok%C3%A9mon_logo.svg/1200px-International_Pok%C3%A9mon_logo.svg.png" width="200">  
+        <h1>Adivina quién es este pokémon?</h1>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Pokebola-pokeball-png-0.png/769px-Pokebola-pokeball-png-0.png" width="100"><br>
+        
+        <!-- Imagen del pokemon seleccionado-->
+        <img v-if="pokemon!=null" :src="this.img" alt="" width="300">
+        <h3>Seleccione su respuesta</h3>
+        <!-- Nombre de todos los 5 pokemon  -->
+        <select v-if="this.listPokemon.length > 4" name="" id="" v-model="selectedOption" >
+            <option value="0" selected>Selecciona tu respuesta</option>
+            <option value="1">{{this.listPokemon[0].name}}</option>
+            <option value="2">{{this.listPokemon[1].name}}</option>
+            <option value="3">{{this.listPokemon[2].name}}</option>
+            <option value="4">{{this.listPokemon[3].name}}</option>
+            <option value="5">{{this.listPokemon[4].name}}</option>
+        </select>
+    <div class="padre">
  
- <div v-if="this.check" class="divc" >
- <span >Opcion Correcto</span>
- </div>
-  <div v-else-if="this.check==null">
- <span></span></div>
+ <!-- Elementos visuales del chequeo de respuesta -->
+    <div v-if="this.check" class="divc" >
+         <span >Opcion Correcto</span>
+    </div>
+    <div v-else-if="this.check==null">
+        <span></span></div>
     <div v-else class="divf">
- <span>Opcion Incorrecto</span>
- </div>
- </div>
-   <button id="next-button" @click="getobtener()"></button>
- </div>
+        <span>Opcion Incorrecto</span>
+    </div>
+    </div>
+
+    <!-- Botón para cargar nueva data -->
+    <button id="next-button" @click="getobtener()"></button>
+    </div>
 
  </div>
 
 </template>
 
-<script>
 
+
+<script>
+// Librería para trabajar con randoms
 import {randomInt} from 'mathjs'
 export default {
    
-
-
-
     data() {
         return {
-             pokemon:null,
-        listPokemon:[],
-        img: null,
-        selectedOption:0,
-        selectedPokemon:null,
-        check:null
+            // Variables Globales
+            pokemon:null,
+            listPokemon:[],
+            img: null,
+            selectedOption:0,
+            selectedPokemon:null,
+            check:null
         }
     },
     watch:{
@@ -69,6 +75,7 @@ selectedOption(value){
 
     methods: {
          async getobtener(){
+            //Limpieza de los componentes html para la carga de nueva data
             if(this.listPokemon.length>4){
                 console.log('clean')
                 this.listPokemon=[]
@@ -77,19 +84,20 @@ selectedOption(value){
                   this.selectedPokemon=null;
             }
             
+            //Extracción de data desde la API 
             for(var c=0; c<5; c++){
                 var id= randomInt(1,500);
                 this.listPokemon.push(await fetch('https://pokeapi.co/api/v2/pokemon/'+String(id)+'/').then(res =>res.json()))
-                console.log(id)
+
             }
-            console.log(this.listPokemon.length)
+
+        
             this.selectedPokemon= randomInt(0,4);
             this.pokemon= this.listPokemon[this.selectedPokemon];
             // this.listPokemon.pop(selectedPokemon);
             this.img=this.pokemon.sprites.front_default;
 
-            console.log(this.img)
-            console.log('SelectedOption=' + this.selectedOption + '\nSelected Pokemon='+ this.selectedPokemon)
+            console.log('SelectedOption=' + this.selectedOption + '\nSelected Pokemon='+ this.selectedPokemon+1)
         }
         
     },
