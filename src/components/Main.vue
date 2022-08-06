@@ -1,9 +1,9 @@
 <template>
 <div class="padre">
     <div class="tarjeta"> 
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/International_Pok%C3%A9mon_logo.svg/1200px-International_Pok%C3%A9mon_logo.svg.png" width="200">  
+        <img src="../assets/International_Pokémon_logo.svg.webp" width="200">  
         <h1>Adivina quién es este pokémon?</h1>
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Pokebola-pokeball-png-0.png/769px-Pokebola-pokeball-png-0.png" width="100"><br>
+        <img src="../assets/769px-Pokebola-pokeball-png-0.png" width="100"><br>
         
         <!-- Imagen del pokemon seleccionado-->
         <img v-if="pokemon!=null" :src="this.img" alt="" width="300">
